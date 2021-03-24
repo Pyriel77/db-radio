@@ -34,8 +34,8 @@ public class RadioCharts {
         String sql = "SELECT song, times_aired FROM music_broadcast ORDER BY times_aired DESC";
         String name = "";
         int aired;
-
         List<Song> songs = new ArrayList<>();
+
         try {
             Connection conn = getConnection();
             PreparedStatement st = conn.prepareStatement(sql);
@@ -44,7 +44,6 @@ public class RadioCharts {
                 name = rs.getString("song");
                 aired = rs.getInt("times_aired");
                 songs.add(new Song(name, aired));
-
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -56,19 +55,18 @@ public class RadioCharts {
 
         for (int i = 1; i < songs.size(); i++) {
             if (songs.get(i - 1).getTimesAired() == songs.get(i).getTimesAired()) {
-                return songs.get(i).getTitle();
+                return songs.get(i - 1).getTitle();
             }
         }
         return songs.get(0).getTitle();
     }
-
 
     public String getMostActiveArtist() {
 
         String sql = "SELECT artist, song, times_aired FROM music_broadcast";
         String nameOfArtist = "";
         String titleOfSong = "";
-        int aired;
+        int count = 0;
 
         List<Artist> artists = new ArrayList<>();
         List<Artist> arts = new ArrayList<>();
@@ -79,8 +77,9 @@ public class RadioCharts {
             while (rs.next()) {
                 nameOfArtist = rs.getString("artist");
                 titleOfSong = rs.getString("song");
-                aired = rs.getInt("times_aired");
-                artists.add(new Artist(nameOfArtist, titleOfSong, aired));
+                artists.add(new Artist(nameOfArtist));
+                artists.get(count).addSongTitle(titleOfSong);
+                count++;
 
             }
         } catch (SQLException e) {
