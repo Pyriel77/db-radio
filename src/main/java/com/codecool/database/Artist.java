@@ -5,10 +5,19 @@ import java.util.*;
 public class Artist {
     private final String name;
     private final Set<String> songTitles = new HashSet<>();
+    private String titleOfSong;
+    private int played;
+
 
 
     public Artist(String name) {
         this.name = name;
+    }
+
+    public Artist(String name, String titleOfSong, int played) {
+        this.name = name;
+        this.titleOfSong = titleOfSong;
+        this.played = played;
     }
 
     public String getName() {
